@@ -1,20 +1,13 @@
 import Question from "./Models/Question.js";
 
 let _state = {
-  questions: [
-    new Question({
-      id: 6900,
-      answer: "To get to the other side",
-      question: "Why did the chicken cross the road?",
-      value: 500
-    })
-  ]
+  questions: []
 };
 
 /** Collection of listeners to be called based on keyed state changes
  * @type {{[x:string]: function[]}}
  */
-let _listeners = {
+let _subscribers = {
   questions: []
 };
 
@@ -25,7 +18,7 @@ let _listeners = {
  * @param {string} prop
  */
 function _validateProp(prop) {
-  if (!_state[prop] || !_listeners[prop]) {
+  if (!_state[prop] || !_subscribers[prop]) {
     throw new Error(`Unable to subscribe to ${prop}`);
   }
 }
@@ -56,7 +49,8 @@ class Store {
   subscribe(prop, fn) {
     _validateProp(prop);
     _validateSubscriber(fn, prop);
-    _listeners[prop].push(fn);
+    _subscribers[prop].push(fn);
+    console.log(_subscribers);
   }
 
   /**
@@ -67,7 +61,8 @@ class Store {
   commit(prop, data) {
     _validateProp(prop);
     _state[prop] = data;
-    _listeners[prop].forEach(fn => fn());
+    _subscribers[prop].forEach(fn => fn());
+    console.log(_state);
   }
 }
 

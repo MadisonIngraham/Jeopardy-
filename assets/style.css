@@ -10823,4 +10823,8 @@
  .popover-title {
    border-bottom: none;
  }
+
+ .col-12 {
+    max-width: 130vh; 
+ }
  
